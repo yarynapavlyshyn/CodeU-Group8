@@ -31,11 +31,20 @@ class BinaryTree:
             raise KeyError("the root already exists")
 
     def nodes(self):
+        """
+        Find all Nodes while preorder traversal and save it to the self._nodes.
+        :return: list(Node)        
+        """
         self._nodes = []
         self.preorder(self.root)
         return self._nodes
 
     def preorder(self, node):
+        """
+        Recursive preorder traversal of the tree.
+        :param node: Node
+        :return: None
+        """
         if node is None:
             return None
         self._nodes.append(node)
@@ -52,6 +61,11 @@ class BinaryTree:
         return self._leaves
 
     def preorderForFindingLeaves(self, node):
+        """
+        Save all the nodes that has not both children in self._leaves (however it`s not leaves)
+        :param node: Node
+        :return: None
+        """
         if node is None:
             return None
         if node.left is None or node.right is None: self._leaves.append(node)
@@ -61,21 +75,18 @@ class BinaryTree:
     def add(self, value, parent = None):
         """
         Add a Node with the given value as a right child of not none parent if not exists else as a left child.
-        If parent is None ????????????
+        If parent is None find the best way to attach it (the highest node that has not both of children)
         :param value: any
         :return: None
         """
         if self.root is None:
             self.set_root(value)
             return
-
         if parent is None:
             parent = [leaf for leaf in self.leaves() if leaf.level == min([l.level for l in self.leaves()])][0]
             # we just add as a child to the first leaf with the lowest level and don`t have one or two of children
-
         if parent.left is None:
             parent.left = Node(value, parent)
-
         elif parent.right is None:
             parent.right = Node(value, parent)
         else:
