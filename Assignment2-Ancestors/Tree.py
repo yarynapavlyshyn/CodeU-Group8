@@ -1,10 +1,8 @@
-import random
 
 class BinaryTree:
-
     def __init__(self, rootKey = None):
         """
-        Tree initialization with the (optional) value
+        Tree initialization with the (optional) value of the root.
         :param rootKey: any
         :return: None
         """
@@ -19,7 +17,7 @@ class BinaryTree:
 
     def set_root(self, key):
         """
-        If there is no root adds a root node with the given value and set the previous root as a left child of the new one..
+        If there is no root adds a root node with the given value and set the previous root as a left child of the new one.
         :param key: any
         :return: None
         """
@@ -62,7 +60,7 @@ class BinaryTree:
 
     def preorderForFindingLeaves(self, node):
         """
-        Save all the nodes that has not both children in self._leaves (however it`s not leaves)
+        Save all the nodes that has not both children in self._leaves (however it`s not leaves).
         :param node: Node
         :return: None
         """
@@ -75,7 +73,7 @@ class BinaryTree:
     def add(self, value, parent = None):
         """
         Add a Node with the given value as a right child of not none parent if not exists else as a left child.
-        If parent is None find the best way to attach it (the highest node that has not both of children)
+        If parent is None find the best way to attach it (the highest node that has not both of children).
         :param value: any
         :return: None
         """
