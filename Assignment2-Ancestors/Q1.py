@@ -2,7 +2,7 @@ from Tree import BinaryTree
 
 def find_ancestors(tree, key):
     """
-    Find all the Nodes in a tree with the given key and save its ancestors`s keys in a list in another list.
+    Find ancestors of the first node with the given value while preorder traversal and save the Nodes in a list that return.
     :param tree: Tree
     :param key: any
     :return: list(Nodes)
@@ -32,7 +32,8 @@ def ancestors_by_keys(tree, key):
 
 def process():
     """
-    Asks for the input in consile to form a list and then the value to find ancestors for
+    The function to process the ancestors_by_keys function.
+    Asks for the input in consile to form a list and then the value to find ancestors for.
     :return:
     """
     elements_for_tree = input("Print the values separated by the TWO whitespaces: ").split("  ")
