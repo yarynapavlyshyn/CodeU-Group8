@@ -1,6 +1,7 @@
 from PointAndGrid import Point, Grid
 
 class Dictionary:
+
     def __init__(self, listOfWords = []):
         """
         For Dictionary initialization with optional list of words.
@@ -52,11 +53,10 @@ class Dictionary:
         prefixes = []
         for word in self.words:
             for i in range(len(word)):
-                pref = word[:i]
+                pref = word[:(i+1)]
                 if pref not in prefixes:
                     prefixes.append(pref)
-        return prefixes
-
+        return sorted(prefixes)
 
     def wordsInGrid(self, grid):
         """
@@ -65,5 +65,6 @@ class Dictionary:
         """
         result = []
         for word in self.words:
-            result.append(grid.findString(word))
-        return list(set(result))
+            if grid.ifWordInGrid(word):
+                result.append(word)
+        return sorted(result)
