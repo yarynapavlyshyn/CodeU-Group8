@@ -44,7 +44,7 @@ class Point:
     def __eq__(self, other):
         """
         Supports equivalence for the Point. Returns True if the elements self and other are equal, False otherwise.
-        :param other: any type.
+        :param other: any type
         :return: bool
         """
         if isinstance(other, self.__class__):
@@ -57,8 +57,8 @@ class Grid:
     def __init__(self, grid):
         """
         For Grid intialization with a grid of elements.
-        :param grid:
-        :return:
+        :param grid: list(list())
+        :return: None
         """
         self.grid = grid
 
@@ -138,16 +138,18 @@ class Grid:
             if self._validCoordinates(coord):
                 result.append(Point(self, coord, self.getElement(coord)))
         return result
-
+    
     def ifWordInGrid(self, word):
         """
-        Return True if the word can be formed in grid False otherwise.
+        Return True if the word can be formed in grid, False otherwise.
         :param word: str
         :return: bool
         """
         if self.findString(word) is None:
             return False
         return True
+    
+    ############################## THE SOLUTION TO ASSIGNMENT 3 ##########################################
 
     def findString(self, word):
         """
@@ -169,9 +171,11 @@ class Grid:
 
     def _findPathRecursively(self, point, word, path, visited):
         """
-        Helper-function to find a word in a grid. Finding the longest path
-        :param startP: Point
+        Helper-function to find a word in a grid. Finds the longest path to form the word (may be only a part)
+        :param point: Point
         :param word: str
+        :param path: list(Point)
+        :param visited: list(Point)
         :return: None
         """
         if self._pathIsWord(path, word):
@@ -179,14 +183,15 @@ class Grid:
 
         possible_ways = self.findPossibleWays(path, point, word, visited)
         if possible_ways == []:
-            visited.append(path.pop(-1))
+            visited.append(path.pop(-1)) # we at the same time pop the last element from path and append it to list visited.
             if path:
                 self._findPathRecursively(path[-1], word, path, visited)
 
         for neighbor in possible_ways:
-            if neighbor  not in path and neighbor not in visited:
+            if neighbor not in path and neighbor not in visited:
                 path.append(neighbor)
                 self._findPathRecursively(neighbor, word, path, visited)
+                
         return path
 
     def findPossibleWays(self, path, point, word, visited):
@@ -231,6 +236,10 @@ class Grid:
         return self.verticalSize(), self.horysontalSize()
 
     def __str__(self):
+        """
+        For string representation of Grid.
+        :return: string
+        """
         strToRet = ''
         for i in range(self.verticalSize()):
             for j in range(self.horysontalSize()):
@@ -240,6 +249,11 @@ class Grid:
         return strToRet
 
     def __eq__(self, other):
+        """
+        Supports equivalence for the Grid. Returns True if the elements self and other are equal, False otherwise.
+        :param other: any type
+        :return: bool
+        """
         if isinstance(other, self.__class__):
             return self.grid == other.grid
         else:
