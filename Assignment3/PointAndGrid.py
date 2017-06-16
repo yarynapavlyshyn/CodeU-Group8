@@ -13,7 +13,7 @@ class Point:
         if grid and coordinates:
             v = grid.getElement(coordinates)
             if value and value != v:
-                raise AttributeError
+                raise ValueError
             else: self.value = v
 
     def setGrid(self, gr):
