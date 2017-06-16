@@ -46,3 +46,12 @@ def process_and_print_out_LCA():
     for e in elements_for_tree:
         T.add(e)
     print(lowest_common_ancestor(T, element1, element2))
+    
+'''
+t = BinaryTree()
+values = [1, 2, 3, "o", "k"]
+for value in values:
+    t.add(value)
+print("Tree: \n",t)
+print('LCA for "o" and "k":', lowest_common_ancestor(t, "o", "k"))
+'''
