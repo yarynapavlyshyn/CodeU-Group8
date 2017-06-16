@@ -26,31 +26,6 @@ class TestPointAndGrid(unittest.TestCase):
         self.assertEqual(4, self.grid.horysontalSize())
         self.assertEqual(3, self.grid.verticalSize())
 
-    def testGrid_AddValidRow(self):
-        self.grid.addRow(['n', 'e', 'w', 'r'])
-
-        expectedGrid = Grid([['l', 'i', 'n', 'e'],
-                             ['i', 'h', 's', 'g'],
-                             ['n', 'd', 'i', 'o'],
-                             ['n', 'e', 'w', 'r']])
-
-        self.assertEqual(self.grid, expectedGrid)
-
-
-    def testGrid_AddInvalidRow(self):
-
-        self.assertRaises(ValueError, lambda: self.grid.addRow(['n', 'e']))
-
-
-    def testGrid_AddValidColumn(self):
-        self.grid.addColumn(['c', 'o', 'l'])
-
-        expectedGrid = Grid([['l', 'i', 'n', 'e', 'c'],
-                             ['i', 'h', 's', 'g', 'o'],
-                             ['n', 'd', 'i', 'o', 'l']])
-        self.assertEqual(self.grid, expectedGrid)
-
-
     def testGrid_FindStringAndItsPresence(self):
 
         isPresent = self.grid.ifWordInGrid('line')
@@ -77,16 +52,15 @@ class TestPointAndGrid(unittest.TestCase):
 
     def testDictionary_ListOfPrefixes(self):
 
-        actual = self.dictionary.listOfPrefixes()
-        expected = ['d', 'di', 'dig', 'e', 'eg', 'ego', 'l', 'li', 'lik', 'like', 'lin', 'line']
+        actual = self.dictionary.prefixes()
+        expected = {'d', 'di', 'dig', 'e', 'eg', 'ego', 'l', 'li', 'lik', 'like', 'lin', 'line'}
         self.assertEqual(actual, expected)
-
 
     def testDictionary_WordsInDictionary(self):
 
-        actualList = self.dictionary.wordsInGrid(self.grid)
-        expectedList = ['dig', 'ego', 'line']
-        self.assertEqual(actualList, expectedList)
+        actual = self.dictionary.wordsInGrid(self.grid)
+        expected = {'dig', 'ego', 'line'}
+        self.assertEqual(actual, expected)
 
 
 if __name__ == '__main__':
