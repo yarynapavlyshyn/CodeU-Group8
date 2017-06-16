@@ -8,7 +8,7 @@ class Dictionary:
         :param listOfWords: list
         :return: None
         """
-        self.words = listOfWords
+        self.words = list(set(listOfWords)) # to avoid dublicates
 
     def addWord(self, word):
         """
@@ -16,7 +16,8 @@ class Dictionary:
         :param word: str
         :return: None
         """
-        self.words.append(word)
+        if word not in self.words:
+            self.words.append(word)
 
     def size(self):
         """
@@ -67,4 +68,5 @@ class Dictionary:
         for word in self.words:
             if grid.ifWordInGrid(word):
                 result.append(word)
+        # here e shouldn't worry about dublicates because there is no dublicate in self.words :)
         return sorted(result)
