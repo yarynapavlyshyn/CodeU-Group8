@@ -153,7 +153,7 @@ class Grid:
         :param word: str
         :param path: list(Point)
         :param visited: list(Point)
-        :return: None
+        :return: list(Point) or None
         """
         if self._pathIsWord(path, word):
             return path
@@ -180,10 +180,10 @@ class Grid:
         neighbors = self.findNeighborsOfPoint(point.coordinates)
         ways = []
         for n in neighbors:
-            # we can't use one Point twice so have a condition -->
+            # to not to use one Point twice -->
             if self._pathIsPartOfWord(path + [n], word) and n not in path:
-                # it is of no use to go in the Point from where we just returned -->
-                if not visited or n != visited[-1]:
+                # it is of no use to go in the Point where we had been already -->
+                if n not in visited:
                     ways.append(n)
         return ways
 
