@@ -76,29 +76,6 @@ class Grid:
         """
         return len(self.grid) if self.grid is not None else 0
 
-    def addRow(self, row):
-        """
-        Add a row to the grid if it is of an appropriate size, raise ValueError otherwise.
-        :param row: list()
-        :return: None or raise ValueError
-        """
-        if len(row) == self.horysontalSize():
-            self.grid.append(row)
-        else:
-            raise ValueError("the row must be of size {}".format(self.horysontalSize())) #...
-
-    def addColumn(self, column):
-        """
-        Add a column to the grid (one element to each row) if it is of an appropriate size, raise ValueError otherwise.
-        :param row: list()
-        :return: None or raise ValueError
-        """
-        if len(column) == self.verticalSize():
-            for row in range(self.verticalSize()):
-                self.grid[row].append(column[row])
-        else:
-            raise ValueError("the column must be of size {}".format(self.verticalSize())) #...
-
     def getElement(self, tuple):
         """
         Return an element with the given coordinates.
@@ -134,10 +111,11 @@ class Grid:
         result = []
         possible_coord = [(row-1, col-1),(row-1, col),(row, col-1),(row-1, col+1),
                           (row+1, col-1),(row+1, col),(row, col+1),(row+1, col+1)]
+        
         for coord in possible_coord:
             if self._validCoordinates(coord):
                 result.append(Point(self, coord, self.getElement(coord)))
-        return result
+        return result if result else None
     
     def ifWordInGrid(self, word):
         """
@@ -145,9 +123,7 @@ class Grid:
         :param word: str
         :return: bool
         """
-        if self.findString(word) is None:
-            return False
-        return True
+        return self.findString(word) is None
     
     ############################## THE SOLUTION TO ASSIGNMENT 3 ##########################################
 
@@ -160,7 +136,8 @@ class Grid:
         """
         startPoints = self.findElementInGrid(word[0])
         path = []
-        for startP in startPoints: # we go further only if the first letter of word is in grid
+        for startP in startPoints: 
+            # we are here only if the first letter of word is in grid
             path = [startP]
             path = self._findPathRecursively(startP, word, path, [])
         if self._pathIsWord(path, word):
@@ -182,8 +159,9 @@ class Grid:
             return path
 
         possible_ways = self.findPossibleWays(path, point, word, visited)
-        if possible_ways == []:
-            visited.append(path.pop(-1)) # we at the same time pop the last element from path and append it to list visited.
+        if not possible_ways:
+            # we at the same time pop the last element from path and append it to list visited
+            visited.append(path.pop(-1))
             if path:
                 self._findPathRecursively(path[-1], word, path, visited)
 
@@ -192,7 +170,7 @@ class Grid:
                 path.append(neighbor)
                 self._findPathRecursively(neighbor, word, path, visited)
                 
-        return path
+        return path if path else None
 
     def findPossibleWays(self, path, point, word, visited):
         """
@@ -202,8 +180,10 @@ class Grid:
         neighbors = self.findNeighborsOfPoint(point.coordinates)
         ways = []
         for n in neighbors:
-            if self._pathIsPartOfWord(path + [n], word) and n not in path: # we can't use one Point twice
-                if not visited or n != visited[-1]: # it is of no use to go in the Point from where we just returned
+            # we can't use one Point twice so have a condition -->
+            if self._pathIsPartOfWord(path + [n], word) and n not in path:
+                # it is of no use to go in the Point from where we just returned -->
+                if not visited or n != visited[-1]:
                     ways.append(n)
         return ways
 
@@ -230,7 +210,7 @@ class Grid:
 
     def getSize(self):
         """
-        Return two integers: number of rows and number of columns in the grid.
+        Two dimentional size of grid. Returns two integers: number of rows and number of columns in the grid.
         :return: int, int
         """
         return self.verticalSize(), self.horysontalSize()
