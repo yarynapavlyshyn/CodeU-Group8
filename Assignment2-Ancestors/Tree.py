@@ -178,6 +178,28 @@ class BinaryTree:
         if self.find(key) is None:
             return False
         return True
+    
+    def __str__(self):
+        """
+        For simple string representation of Tree.
+        :return: str
+        """
+        node = self.root
+        str_to_return = self.__repr__(node)
+        return str_to_return
+
+    def __repr__(self, node):
+        """
+        Recursive helper function for __str__() method.
+        :param node: Node
+        :return: str
+        """
+        if node is None: return ""
+
+        ret = "\t" * (node.level - 1) + str(node.key) + "\n"
+        ret += self.__repr__(node.right)
+        ret += self.__repr__(node.left)
+        return ret
 
 class Node:
     def __init__(self, key, parent = None, right = None, left = None): # key is obvious
