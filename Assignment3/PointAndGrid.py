@@ -123,7 +123,7 @@ class Grid:
         :param word: str
         :return: bool
         """
-        return self.findString(word) is None
+        return self.findString(word) is not None
     
     ############################## THE SOLUTION TO ASSIGNMENT 3 ##########################################
 
