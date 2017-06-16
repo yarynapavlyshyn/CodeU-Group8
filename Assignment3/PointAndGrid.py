@@ -62,7 +62,7 @@ class Grid:
         """
         self.grid = grid
 
-    def horysontalSize(self):
+    def horisontalSize(self):
         """
         Returns number of columns. Size of a row.
         :return: int
@@ -213,7 +213,7 @@ class Grid:
         Two dimentional size of grid. Returns two integers: number of rows and number of columns in the grid.
         :return: int, int
         """
-        return self.verticalSize(), self.horysontalSize()
+        return self.verticalSize(), self.horisontalSize()
 
     def __str__(self):
         """
@@ -222,7 +222,7 @@ class Grid:
         """
         strToRet = ''
         for i in range(self.verticalSize()):
-            for j in range(self.horysontalSize()):
+            for j in range(self.horisontalSize()):
                 strToRet += str(self.grid[i][j]) + " "
             strToRet += '\n'
 
