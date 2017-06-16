@@ -2,13 +2,15 @@ from PointAndGrid import Point, Grid
 
 class Dictionary:
 
-    def __init__(self, listOfWords = []):
+    def __init__(self, setOfWords = {}):
         """
         For Dictionary initialization with optional list of words.
-        :param listOfWords: list
+        :param listOfWords: set(str) or None
         :return: None
         """
-        self.words = list(set(listOfWords)) # to avoid dublicates
+        self.words = set(listOfWords) # to avoid dublicates
+        self._prefixes = set()
+        self._updatePrefixes()
 
     def addWord(self, word):
         """
@@ -16,8 +18,8 @@ class Dictionary:
         :param word: str
         :return: None
         """
-        if word not in self.words:
-            self.words.append(word)
+        self.words.add(word)
+        self._updatePrefixes(word)
 
     def size(self):
         """
@@ -32,41 +34,50 @@ class Dictionary:
         :param word: str
         :return: bool
         """
-        if word in self.words:
-            return True
-        return False
+        return word in self.words
 
     def isPrefix(self, word):
         """
         Return True if the wod is one of the prefixes of the dictionary, false otherwise.
-        :param word:
+        :param word: str
         :return: bool
         """
-        if word in self.listOfPrefixes():
-            return True
-        return False
+        return word in self._prefixes
 
-    def listOfPrefixes(self):
+    def prefixes(self):
         """
         Return the list of all prefixes in the dictionary.
-        :return: list(string)
+        :return: set(string)
         """
-        prefixes = []
-        for word in self.words:
-            for i in range(len(word)):
-                pref = word[:(i+1)]
-                if pref not in prefixes:
-                    prefixes.append(pref)
-        return sorted(prefixes)
+        return self._prefixes
 
     def wordsInGrid(self, grid):
         """
         Returns all words in the dictionary thet can be formed in the grid.
-        :return: list(str)
+        :return: set(str)
         """
-        result = []
+        result = set()
         for word in self.words:
             if grid.ifWordInGrid(word):
-                result.append(word)
-        # here e shouldn't worry about dublicates because there is no dublicate in self.words :)
-        return sorted(result)
+                result.add(word)
+        return result
+
+    def _updatePrefixes(self, word = None):
+        """
+        If argument word is given add all prefixes in word to self.prefixes, add all prefixes in all words in dictionary.
+        :param word: string or None
+        :return: set
+        """
+        if word:
+            self._prefixes = self._prefixes.union(self._wordPrefixes(word))
+            return
+        for w in self.words:
+            self._updatePrefixes(w)
+
+    def _wordPrefixes(self, word):
+        """
+        Return a set of all prefixes in the word.
+        :param word: str
+        :return: set
+        """
+        return set([ word[:i] for i in range(1, len(word) + 1) ])
