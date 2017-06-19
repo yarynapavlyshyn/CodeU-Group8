@@ -68,14 +68,13 @@ class Dictionary:
         """
         return word.lower() in self._words
 
-    def isPrefix(self, prefix):
+    def isPrefix(self, word):
         """
         Return True if the wod is one of the prefixes of the dictionary, false otherwise.
         :param word: str
         :return: bool
         """
-        prefix = prefix.lower()
-        return prefix in self._prefixes
+        return word in self._prefixes
 
     def prefixes(self):
         """
@@ -93,7 +92,7 @@ class Dictionary:
         for word in self._words:
             if grid.ifWordInGrid(word):
                 result.add(word)
-        return result
+        return result if result else None
 
     def _updatePrefixes(self, word = None):
         """
@@ -102,7 +101,6 @@ class Dictionary:
         :return: set
         """
         if word:
-            word = word.lower()
             newPrefixes = self._wordPrefixes(word)
             for pref in newPrefixes:
                 if pref in self._prefixes:
@@ -119,7 +117,6 @@ class Dictionary:
         :param word: str
         :return: list(string)
         """
-        word = word.lower()
         return [ word[:i] for i in range(1, len(word) + 1) ]
 
     def __str__(self):
