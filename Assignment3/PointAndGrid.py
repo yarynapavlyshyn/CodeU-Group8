@@ -2,10 +2,11 @@ class Point:
 
     def __init__(self, grid = None, coordinates = None, value = None):
         """
-        For Point initialization with optional grid and coordinates.
+        For Point initialization with optional grid and coordinates. Raises ValueError 
+        if element in grid in such coordinates is not equal to the given value.
         :param grid: Grid
         :param coordinates: Tuple(int, int)
-        :return: None
+        :return: None or raises ValueError
         """
         self.grid = grid
         self.coordinates = coordinates
@@ -60,9 +61,21 @@ class Grid:
         :param grid: list(list())
         :return: None
         """
-        self.grid = grid
 
-    def horisontalSize(self):
+        self.grid = grid
+        self.lowerAllElements()
+
+    def lowerAllElements(self):
+        """
+        Lower all elements in grid.
+        :return: None
+        """
+        R, C = self.getSize()
+        for r in range(R):
+            for c in range(C):
+                self.grid[r][c] = self.grid[r][c].lower()
+
+    def horizontalSize(self):
         """
         Returns number of columns. Size of a row.
         :return: int
@@ -144,6 +157,8 @@ class Grid:
             return path
 
     def _pathIsWord(self, path, word):
+        if not path:
+            return False
         return [p.value for p in path] == list(word)
 
     def _findPathRecursively(self, point, word, path, visited):
@@ -170,7 +185,7 @@ class Grid:
                 path.append(neighbor)
                 self._findPathRecursively(neighbor, word, path, visited)
                 
-        return path if path else None
+        return path
 
     def findPossibleWays(self, path, point, word, visited):
         """
@@ -194,6 +209,8 @@ class Grid:
         :param word: str
         :return: bool
         """
+        if not path:
+            return False
         valuesInPath = [point.value for point in path]
         return valuesInPath == list(word)[:len(valuesInPath)]
 
@@ -213,7 +230,7 @@ class Grid:
         Two dimentional size of grid. Returns two integers: number of rows and number of columns in the grid.
         :return: int, int
         """
-        return self.verticalSize(), self.horisontalSize()
+        return self.verticalSize(), self.horizontalSize()
 
     def __str__(self):
         """
@@ -222,7 +239,7 @@ class Grid:
         """
         strToRet = ''
         for i in range(self.verticalSize()):
-            for j in range(self.horisontalSize()):
+            for j in range(self.horizontalSize()):
                 strToRet += str(self.grid[i][j]) + " "
             strToRet += '\n'
 
