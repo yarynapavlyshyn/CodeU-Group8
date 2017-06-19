@@ -1,0 +1,11 @@
+So we have implemented three classes: Point, Grid and Dictionary.
+Dictionary class is actually unnecessary, but it allows to work with some words at the same. 
+To find the word there is a method in Grid findString(string) where you pass your word as 
+argument and get the list of Points with all the letters in the word.
+Also you can check just if the word exists by using ifWordIngrid() method.
+
+After creating dictionary of Dictionary class you can use wordsInGrid(grid) method by passing some 
+Grid instance. As a result you will get set of words in dictionary that can be formed in grid.
+
+The function is recursive, complexity is O(n * m + l^2) where l - length of the word
+                                                             m, n - size of the grid
