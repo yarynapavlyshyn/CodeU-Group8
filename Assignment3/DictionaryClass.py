@@ -2,15 +2,25 @@ from PointAndGrid import Point, Grid
 
 class Dictionary:
 
-    def __init__(self, setOfWords = {}):
+    def __init__(self, sequenceOfWords = None):
         """
-        For Dictionary initialization with optional list of words.
-        :param listOfWords: set(str) or None
+        For Dictionary initialization with optional set of words.
+        :param setOfWords: any iterable sequence
         :return: None
         """
-        self.words = set(listOfWords) # to avoid dublicates
-        self._prefixes = set()
+        if sequenceOfWords is None:
+            self._words = set()
+        else:
+            self._words = set([w.lower() for w in sequenceOfWords])
+        self._prefixes = dict()
         self._updatePrefixes()
+
+    def words(self):
+        """
+        Return a set of words in dictionary.
+        :return: set(str)
+        """
+        return self._words
 
     def addWord(self, word):
         """
@@ -18,15 +28,37 @@ class Dictionary:
         :param word: str
         :return: None
         """
-        self.words.add(word)
+        word = word.lower()
+        if word in self._words:
+            raise ValueError("there already exists such a word")
+        self._words.add(word)
         self._updatePrefixes(word)
+
+    def deleteWord(self, word):
+        """
+        Delete a word from dictionary and its prefixes from the self._prefixes if they are not prefixes of other words.
+        Raise ValueError if word is not in dictionary.
+        :param word: string
+        :return: None or raises ValueError
+        """
+        word = word.lower()
+        if word not in self._words:
+            raise ValueError("there is not such a word")
+
+        self._words.remove(word)
+        prefs = self._wordPrefixes(word)
+        for pref in prefs:
+            if self._prefixes[pref] == 1:
+                self._prefixes.pop(pref)
+            else:
+                self._prefixes[pref] -= 1
 
     def size(self):
         """
         Return the size of dictionary - length of the list of words.
         :return: int
         """
-        return len(self.words)
+        return len(self._words)
 
     def isWord(self, word):
         """
@@ -34,22 +66,23 @@ class Dictionary:
         :param word: str
         :return: bool
         """
-        return word in self.words
+        return word.lower() in self._words
 
-    def isPrefix(self, word):
+    def isPrefix(self, prefix):
         """
         Return True if the wod is one of the prefixes of the dictionary, false otherwise.
         :param word: str
         :return: bool
         """
-        return word in self._prefixes
+        prefix = prefix.lower()
+        return prefix in self._prefixes
 
     def prefixes(self):
         """
         Return the list of all prefixes in the dictionary.
         :return: set(string)
         """
-        return self._prefixes
+        return set(self._prefixes)
 
     def wordsInGrid(self, grid):
         """
@@ -57,7 +90,7 @@ class Dictionary:
         :return: set(str)
         """
         result = set()
-        for word in self.words:
+        for word in self._words:
             if grid.ifWordInGrid(word):
                 result.add(word)
         return result
@@ -69,15 +102,32 @@ class Dictionary:
         :return: set
         """
         if word:
-            self._prefixes = self._prefixes.union(self._wordPrefixes(word))
-            return
-        for w in self.words:
-            self._updatePrefixes(w)
+            word = word.lower()
+            newPrefixes = self._wordPrefixes(word)
+            for pref in newPrefixes:
+                if pref in self._prefixes:
+                    self._prefixes[pref] += 1
+                else:
+                    self._prefixes[pref] = 1
+        else:
+            for w in self._words:
+                self._updatePrefixes(w)
 
     def _wordPrefixes(self, word):
         """
-        Return a set of all prefixes in the word.
+        Return a list of prefixes in the word.
         :param word: str
-        :return: set
+        :return: list(string)
         """
-        return set([ word[:i] for i in range(1, len(word) + 1) ])
+        word = word.lower()
+        return [ word[:i] for i in range(1, len(word) + 1) ]
+
+    def __str__(self):
+        """
+        For string representation of Dictionary.
+        :return: str
+        """
+        return str(self._words)
+
+    def __len__(self):
+        return self.size()
