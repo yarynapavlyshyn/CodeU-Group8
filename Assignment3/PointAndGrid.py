@@ -167,9 +167,9 @@ class Grid:
     def findString(self, word):
         """
         Find the word in the grid where we can starting from one position move to any neighbors,
-        bub can't visit the same cell twice. Return the path if exists, None otherwise.
+        but can't visit the same cell twice. Return the path if exists, None otherwise.
         :param word: string
-        :return: list(Point)
+        :return: list(Point) or None
         """
         startPoints = self.findElementInGrid(word[0])
         path = []
