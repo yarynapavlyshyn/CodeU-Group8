@@ -2,11 +2,10 @@ class Point:
 
     def __init__(self, grid = None, coordinates = None, value = None):
         """
-        For Point initialization with optional grid and coordinates. Raises ValueError 
-        if element in grid in such coordinates is not equal to the given value.
+        For Point initialization with optional grid and coordinates.
         :param grid: Grid
         :param coordinates: Tuple(int, int)
-        :return: None or raises ValueError
+        :return: None
         """
         self.grid = grid
         self.coordinates = coordinates
@@ -181,9 +180,8 @@ class Grid:
                 self._findPathRecursively(path[-1], word, path, visited)
 
         for neighbor in possible_ways:
-            if neighbor not in path and neighbor not in visited:
-                path.append(neighbor)
-                self._findPathRecursively(neighbor, word, path, visited)
+            path.append(neighbor)
+            self._findPathRecursively(neighbor, word, path, visited)
                 
         return path
 
