@@ -1,5 +1,5 @@
 So we have implemented three classes: Point, Grid and Dictionary.
-Dictionary class is actually unnecessary, but it allows to work with some words at the same. 
+Dictionary class is actually unnecessary, but it allows to work with some words at the same time. 
 To find the word there is a method in Grid findString(string) where you pass your word as 
 argument and get the list of Points with all the letters in the word.
 Also you can check just if the word exists by using ifWordIngrid() method.
