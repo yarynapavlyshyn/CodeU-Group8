@@ -6,8 +6,10 @@ class TestGridMethods(unittest.TestCase):
 
     def setUp(self):
         self.empty_grid = Grid([[]])
+        
         self.small_grid = Grid([['T','T','F'],
                                 ['T','F','T']])
+        
         self.big_grid = Grid([['T', 'T', 'F', 'F', 'F', 'F', 'T'],
                               ['T', 'T', 'F', 'F', 'F', 'F', 'T'],
                               ['F', 'F', 'F', 'F', 'F', 'F', 'T'],
@@ -15,8 +17,10 @@ class TestGridMethods(unittest.TestCase):
                               ['T', 'T', 'F', 'F', 'F', 'F', 'T'],
                               ['T', 'T', 'F', 'F', 'F', 'F', 'T'],
                               ['F', 'T', 'F', 'F', 'F', 'F', 'T']])
+        
         self.the_sea = Grid([['F','F','F'],
                              ['F','F','F']])
+        
         self.big_island = Grid([['T','T','T'],
                                 ['T','T','T']])
 
