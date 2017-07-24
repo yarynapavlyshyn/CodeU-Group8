@@ -1,6 +1,3 @@
-import random
-
-
 class Parking:
 
     def __init__(self, cars):
@@ -8,7 +5,7 @@ class Parking:
         self._size = len(cars)
 
     def cars(self):
-        return self._cars
+        return self._cars.copy()
 
     def size(self):
         return self._size
@@ -17,30 +14,36 @@ class Parking:
         """
         Rearrange cars in self._cars to get the result and print out each step.
         :param result: list(int)
-        :return: None
+        :return: None or raise ValueError
         """
-        cars = self._cars
-        moves = []
+        if len(result) != self.size():
+            raise ValueError
+        if result == self._cars or not result:
+            return []
+
+        cars = self.cars()
+        moves = [cars.copy()]
 
         car_catalog = self.catalog(self._cars)
-        res_catalog = self.catalog(result)
+        res_catalog = self.reversed_catalog(result)
 
         cars_to_move = [c for c in range(1, self._size)]
 
-        while cars_to_move:
+        while cars_to_move: # O(n+1) the worst case or O(n)
+            # if we can place on 0's position car while it is its end position we choose the car
+            car = res_catalog[car_catalog[0]] # O(1)
 
-            car = random.choice(cars_to_move)  # O(n)
-            if car_catalog[car] == res_catalog[car]:
-                cars_to_move.remove(car) # O(1)
+            if car == 0:
+                car = cars_to_move[0]  # O(1)
+
+            if res_catalog[car_catalog[car]] == car:
+                cars_to_move.remove(car)  # O(1)
                 continue
 
+            cars[car_catalog[car]], cars[car_catalog[0]] = 0, car # O(1)
+            car_catalog[car], car_catalog[0] = car_catalog[0], car_catalog[car] # O(1)
             moves.append(cars.copy())
 
-            cars[car_catalog[car]], cars[car_catalog[0]] = 0, car # O(n)
-
-            car_catalog[car], car_catalog[0] = car_catalog[0], car_catalog[car] # O(1)
-
-        moves.append(cars)
         return moves
 
     def catalog(self, cars):
@@ -55,8 +58,14 @@ class Parking:
             cat_dict[cars[i]] = i
         return cat_dict
 
-Park = Parking([1, 2, 0, 3])
-moves = Park.rearrange([1, 3, 0, 2])
+    def reversed_catalog(self, cars):
+        """
+        Create dictionary with indices of cars as keys and their numbers as values. Complexity is O(n)
+        :param cars: list(int)
+        :return: dict(int, int)
+        """
 
-for i in moves:
-    print(i)
+        cat_dict = {}
+        for i in range(self._size): # O(n)
+            cat_dict[i] = cars[i]
+        return cat_dict
